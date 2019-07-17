@@ -1,0 +1,38 @@
+{
+  "name": "purescript-tolerant-argonaut",
+  "homepage": "https://github.com/matthew-hilty/purescript-tolerant-argonaut",
+  "authors": [
+    "Matthew Hilty <hilty.matthew+purescript@gmail.com>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthew-hilty/purescript-tolerant-argonaut.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-argonaut-codecs": "^6.0.0",
+    "purescript-argonaut-core": "^5.0.0",
+    "purescript-arrays": "^5.2.0",
+    "purescript-console": "^4.2.0",
+    "purescript-effect": "^2.0.0",
+    "purescript-higher-order": "^0.1.0",
+    "purescript-lists": "^5.4.0",
+    "purescript-proxying": "^1.0.0",
+    "purescript-record": "^2.0.0",
+    "purescript-struct": "^1.0.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^4.0.0",
+    "purescript-test-unit": "^14.0.0"
+  },
+  "resolutions": {
+    "purescript-record": "^2.0.0",
+    "purescript-typelevel-prelude": "^4.0.0"
+  }
+}

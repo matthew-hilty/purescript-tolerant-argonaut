@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "purescript-tolerant-argonaut",
+  "version": "0.1.0",
+  "description": "Facilities for decoding JSON records with Argonaut",
+  "main": "index.js",
+  "repository": "https://github.com/matthew-hilty/purescript-tolerant-argonaut",
+  "author": "matthew.hilty <hilty.matthew+purescript@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.8.8",
+    "pulp": "^13.0.0"
+  }
+}
