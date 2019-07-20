@@ -1,6 +1,6 @@
-module Data.Argonaut.Decode.Struct.Override.DecodeJsonWith
-  ( class DecodeJsonWith
-  , decodeJsonWith
+module Data.Argonaut.Decode.Struct.Override.DecodeJsonPer
+  ( class DecodeJsonPer
+  , decodeJsonPer
   ) where
 
 import Prelude
@@ -33,7 +33,7 @@ import Type.Row
   )
 import Unsafe.Coerce (unsafeCoerce)
 
-class DecodeJsonWith
+class DecodeJsonPer
   (p  :: Type -> Type -> Type)
   (f  :: Type -> Type)
   (g  :: # Type -> Type)
@@ -46,7 +46,7 @@ class DecodeJsonWith
   , l1 -> r1
   , l0 l1 -> r2
   where
-  decodeJsonWith
+  decodeJsonPer
     :: forall h
      . RLProxying h l0
     => RLProxying h l1
@@ -56,20 +56,20 @@ class DecodeJsonWith
     -> Object Json
     -> f (p (g r1) (g r2))
 
-instance decodeJsonWithNil
+instance decodeJsonPerNil
   :: ( Category p
      , Top1_ f
      )
-  => DecodeJsonWith p f g Nil () l r r
+  => DecodeJsonPer p f g Nil () l r r
   where
-  decodeJsonWith _ _ _ _ = top1_ identity
+  decodeJsonPer _ _ _ _ = top1_ identity
 
-instance decodeJsonWithCons
+instance decodeJsonPerCons
   :: ( Bind f
      , Bottom2 f String
      , Cons s fn r0' r0
      , Cons s v r2' r2
-     , DecodeJsonWith p f g l0' r0' l1 r1 r2'
+     , DecodeJsonPer p f g l0' r0' l1 r1 r2'
      , IsSymbol s
      , Lacks s r2'
      , RGet g SProxy s l0 r0
@@ -78,13 +78,13 @@ instance decodeJsonWithCons
      , Top1_ f
      , TypeEquals fn (Json -> f v)
      )
-  => DecodeJsonWith p f g (Cons s fn l0') r0 l1 r1 r2
+  => DecodeJsonPer p f g (Cons s fn l0') r0 l1 r1 r2
   where
-  decodeJsonWith _ _ decoderStruct object = do
+  decodeJsonPer _ _ decoderStruct object = do
     case lookup fieldName object of
       Just jsonVal -> do
         val <- decoder jsonVal
-        doRest <- decodeJsonWith l0' l1 decoderStruct' object
+        doRest <- decodeJsonPer l0' l1 decoderStruct' object
         top1_ $ rinsert l2' l2 s val <<< doRest
       Nothing ->
         bottom2 $ getMissingFieldErrorMessage fieldName

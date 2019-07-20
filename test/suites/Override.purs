@@ -4,7 +4,7 @@ module Test.Suites.Override
 
 import Prelude
 
-import Data.Argonaut.Decode.Struct.Override (decodeJsonWith)
+import Data.Argonaut.Decode.Struct.Override (decodeJsonPer)
 import Data.Argonaut.Encode (encodeJson)
 import Data.Either (Either(Left, Right))
 import Data.Maybe (Maybe(Just))
@@ -22,7 +22,7 @@ suites =
               let
                 result :: Either String { a0 :: Int, a1 :: Int, a2 :: Maybe Int }
                 result =
-                  decodeJsonWith
+                  decodeJsonPer
                     { a2: \json -> Right $ Just 1002 }
                     (encodeJson { a0: 0, a1: 1, a2: Just 2 })
               assert $ check result withErrorMsg
@@ -41,7 +41,7 @@ suites =
                     , a4 :: Maybe Boolean
                     }
               result =
-                decodeJsonWith
+                decodeJsonPer
                   { a2: \json -> Right $ Just 1002
                   , a3: \json -> Right $ Just "bye"
                   , a4: \json -> Right $ Just false
@@ -60,7 +60,7 @@ suites =
                     , a4 :: Maybe Boolean
                     }
               result =
-                decodeJsonWith
+                decodeJsonPer
                   { a2: \json -> Right $ Just 1002
                   , a3: \json -> Right $ Just "bye"
                   , a4: \json -> Right $ Just false
@@ -87,7 +87,7 @@ suites =
                       , a4 :: Maybe Boolean
                       }
                 result =
-                  decodeJsonWith
+                  decodeJsonPer
                     { a1: \json -> Right $ 1001
                     , a3: \json -> Right $ Just "bye"
                     }
@@ -116,7 +116,7 @@ suites =
                       , a4 :: Maybe Boolean
                       }
                 result =
-                  decodeJsonWith
+                  decodeJsonPer
                     { a1: \json -> Right $ 1002
                     , a3: \json -> Left "Capricious failure"
                     }
@@ -141,7 +141,7 @@ suites =
                       , a4 :: Maybe Boolean
                       }
                 result =
-                  decodeJsonWith
+                  decodeJsonPer
                     { a1: \json -> Right $ 1001
                     , a4: \json -> Right $ Just false
                     }
@@ -172,7 +172,7 @@ suites =
                       , a4 :: Maybe Boolean
                       }
                 result =
-                  decodeJsonWith
+                  decodeJsonPer
                     {}
                     (encodeJson { a0: 0
                                 , a1: 1
