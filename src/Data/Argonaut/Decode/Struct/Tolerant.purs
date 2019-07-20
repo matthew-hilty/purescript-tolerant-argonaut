@@ -9,7 +9,10 @@ import Data.Argonaut.Decode.Struct.Tolerant.Combinators
   , getFieldOptional  , (.::!)
   , getFieldOptional' , (.::?)
   )
-import Data.Argonaut.Decode.Struct.Tolerant.Cross.Utils (decodeJsonWith)
+import Data.Argonaut.Decode.Struct.Tolerant.Cross.Utils
+  ( decodeJsonPer
+  , decodeJsonWith
+  )
 import Data.Argonaut.Decode.Struct.Tolerant.DecodeJson
   ( class DecodeJson
   , decodeJson
