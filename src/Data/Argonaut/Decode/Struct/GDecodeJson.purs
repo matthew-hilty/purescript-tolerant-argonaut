@@ -22,7 +22,6 @@ import Data.Struct (class RInsert, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
 import Record.Builder (Builder, build)
-import Type.Proxying (class RLProxying)
 import Type.Row (class Cons, class Lacks)
 import Type.RowList (class RowToList, Cons, Nil, RLProxy(RLProxy), kind RowList)
 
@@ -40,10 +39,8 @@ class GDecodeJson
   , l1 l2 -> l0
   where
   gDecodeJson
-    :: forall h
-     . RLProxying h l1
-    => RLProxying h l2
-    => h l1
+    :: forall (h :: RowList -> Type)
+     . h l1
     -> h l2
     -> Object Json
     -> f (p (g r1) (g r2))

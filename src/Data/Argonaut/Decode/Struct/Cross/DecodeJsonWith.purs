@@ -22,7 +22,6 @@ import Data.Struct (class RGet, class RInsert, rget, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
 import Type.Equality (class TypeEquals, to)
-import Type.Proxying (class RLProxying)
 import Type.Row (class Cons, class Lacks)
 import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
 import Unsafe.Coerce (unsafeCoerce)
@@ -42,10 +41,8 @@ class DecodeJsonWith
   , l0 l2 -> r3
   where
   decodeJsonWith
-    :: forall h
-     . RLProxying h l0
-    => RLProxying h l2
-    => h l0
+    :: forall (h :: RowList -> Type)
+     . h l0
     -> h l2
     -> g r0
     -> Object Json

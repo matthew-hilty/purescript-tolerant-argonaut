@@ -16,7 +16,6 @@ import Data.Operator.Top (class Top1_, top1_)
 import Data.Struct (class RInsert, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
-import Type.Proxying (class RLProxying)
 import Type.Row (class Cons, class Lacks)
 import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
 
@@ -32,10 +31,8 @@ class GDecodeJson
   , l1 -> r1
   where
   gDecodeJson
-    :: forall h
-     . RLProxying h l0
-    => RLProxying h l1
-    => h l0
+    :: forall (h :: RowList -> Type)
+     . h l0
     -> h l1
     -> Object Json
     -> f (p (g r0) (g r1))
