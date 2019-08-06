@@ -15,8 +15,7 @@ import Data.Operator.Bottom (class Bottom2)
 import Data.Operator.Top (class Top1_, top1_)
 import Foreign.Object (Object)
 import Record.Builder (Builder, build)
-import Type.Data.RowList (RLProxy(RLProxy))
-import Type.Row (class RowToList)
+import Type.RowList (class RowToList, RLProxy(RLProxy))
 
 decodeJsonWith
   :: forall f l0 l2 r0 r2 r3

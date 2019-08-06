@@ -22,16 +22,9 @@ import Data.Struct (class RInsert, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
 import Record.Builder (Builder, build)
-import Type.Data.RowList (RLProxy(RLProxy))
 import Type.Proxying (class RLProxying)
-import Type.Row
-  ( class Cons
-  , class Lacks
-  , class RowToList
-  , Cons
-  , Nil
-  , kind RowList
-  )
+import Type.Row (class Cons, class Lacks)
+import Type.RowList (class RowToList, Cons, Nil, RLProxy(RLProxy), kind RowList)
 
 class GDecodeJson
   (p  :: Type -> Type -> Type)

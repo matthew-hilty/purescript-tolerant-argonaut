@@ -2,7 +2,9 @@
 Welcome to a Spago project!
 You can edit this file as you like.
 -}
-{ name =
+{ sources =
+    [ "src/**/*.purs", "test/**/*.purs" ]
+, name =
     "tolerant-argonaut"
 , dependencies =
     [ "argonaut-codecs"
@@ -12,10 +14,10 @@ You can edit this file as you like.
     , "effect"
     , "higher-order"
     , "lists"
-    , "proxying"
     , "psci-support"
     , "record"
     , "struct"
+    , "typelevel-prelude"
     ]
 , packages =
     ./packages.dhall

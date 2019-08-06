@@ -16,8 +16,7 @@ import Data.Maybe (Maybe(Just, Nothing))
 import Data.Operator.Bottom (class Bottom2, bottom2)
 import Data.Operator.Top (class Top1_, top1_)
 import Foreign.Object (Object)
-import Type.Data.RowList (RLProxy(RLProxy))
-import Type.Row (class RowToList)
+import Type.RowList (class RowToList, RLProxy(RLProxy))
 
 elaborateFailure :: forall a. String -> Either String a -> Either String a
 elaborateFailure s e = lmap msg e

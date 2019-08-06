@@ -21,16 +21,10 @@ import Data.Maybe (Maybe(Just, Nothing))
 import Data.Struct (class RGet, class RInsert, rget, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
-import Type.Data.RowList (RLProxy(RLProxy))
 import Type.Equality (class TypeEquals, to)
 import Type.Proxying (class RLProxying)
-import Type.Row
-  ( class Cons
-  , class Lacks
-  , Cons
-  , Nil
-  , kind RowList
-  )
+import Type.Row (class Cons, class Lacks)
+import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
 import Unsafe.Coerce (unsafeCoerce)
 
 class DecodeJsonPer

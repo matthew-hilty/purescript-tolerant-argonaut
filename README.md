@@ -61,7 +61,7 @@ iceCream =
   convert _ = One
 ```
 
-## Example 3 -- "Folding" over JSON fields.
+## Example 3 -- "Folding" over JSON fields
 
 [decodeJsonWith](https://pursuit.purescript.org/packages/purescript-tolerant-argonaut/docs/Data.Argonaut.Decode.Struct#v:decodeJsonWith), like `decodeJsonPer`, overrides standard JSON decoding for specified fields of a JSON object. However, unlike its counterpart, `decodeJsonWith` also enables a simple kind of structure folding. Data derivable via standard decoding is accumulated and made available to the decoding customizations of the remaining fields.
 
@@ -82,7 +82,8 @@ jsonIceCream = encodeJson { flavor: "vanilla", promotion: true, scoops: 2 }
 iceCream :: Either String IceCream
 iceCream =
     T.decodeJsonWith
-      { scoops: \scoopsJson { promotion } -> convert promotion <$> D.decodeJson scoopsJson }
+      { scoops: \scoopsJson { promotion } ->
+                    convert promotion <$> D.decodeJson scoopsJson }
       jsonIceCream
   where
   convert :: Promotion -> Int -> Scoops

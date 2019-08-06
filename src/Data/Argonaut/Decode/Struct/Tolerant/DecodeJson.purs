@@ -17,8 +17,7 @@ import Data.Maybe (Maybe(Just, Nothing))
 import Data.Operator.Bottom (bottom2)
 import Data.Operator.Top (top1_)
 import Record.Builder (Builder, build)
-import Type.Data.RowList (RLProxy(RLProxy))
-import Type.Row (class RowToList, Nil, kind RowList)
+import Type.RowList (class RowToList, Nil, RLProxy(RLProxy), kind RowList)
 
 class DecodeJson a where
   decodeJson :: Json -> Either String a

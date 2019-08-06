@@ -16,9 +16,9 @@ import Data.Operator.Top (class Top1_, top1_)
 import Data.Struct (class RInsert, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
-import Type.Data.RowList (RLProxy(RLProxy))
 import Type.Proxying (class RLProxying)
-import Type.Row (class Cons, class Lacks, Cons, Nil, kind RowList)
+import Type.Row (class Cons, class Lacks)
+import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
 
 class GDecodeJson
   (p  :: Type -> Type -> Type)
