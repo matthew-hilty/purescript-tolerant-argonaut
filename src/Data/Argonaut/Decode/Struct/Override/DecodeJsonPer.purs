@@ -23,24 +23,24 @@ import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
 import Type.Equality (class TypeEquals, to)
 import Type.Row (class Cons, class Lacks)
-import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
+import Type.RowList (Cons, Nil, RLProxy(RLProxy), RowList)
 import Unsafe.Coerce (unsafeCoerce)
 
 class DecodeJsonPer
   (p  :: Type -> Type -> Type)
   (f  :: Type -> Type)
-  (g  :: # Type -> Type)
-  (l0 :: RowList)
-  (r0 :: # Type)
-  (l1 :: RowList)
-  (r1 :: # Type)
-  (r2 :: # Type)
+  (g  :: Row Type -> Type)
+  (l0 :: RowList Type)
+  (r0 :: Row Type)
+  (l1 :: RowList Type)
+  (r1 :: Row Type)
+  (r2 :: Row Type)
   | l0 -> r0
   , l1 -> r1
   , l0 l1 -> r2
   where
   decodeJsonPer
-    :: forall (h :: RowList -> Type)
+    :: forall (h :: RowList Type -> Type)
      . h l0
     -> h l1
     -> g r0

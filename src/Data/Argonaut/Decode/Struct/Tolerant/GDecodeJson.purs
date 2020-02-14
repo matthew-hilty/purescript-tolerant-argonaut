@@ -17,21 +17,21 @@ import Data.Struct (class RInsert, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
 import Type.Row (class Cons, class Lacks)
-import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
+import Type.RowList (Cons, Nil, RLProxy(RLProxy), RowList)
 
 class GDecodeJson
   (p  :: Type -> Type -> Type)
   (f  :: Type -> Type)
-  (g  :: # Type -> Type)
-  (l0 :: RowList)
-  (r0 :: # Type)
-  (l1 :: RowList)
-  (r1 :: # Type)
+  (g  :: Row Type -> Type)
+  (l0 :: RowList Type)
+  (r0 :: Row Type)
+  (l1 :: RowList Type)
+  (r1 :: Row Type)
   | l0 -> r0
   , l1 -> r1
   where
   gDecodeJson
-    :: forall (h :: RowList -> Type)
+    :: forall (h :: RowList Type -> Type)
      . h l0
     -> h l1
     -> Object Json
