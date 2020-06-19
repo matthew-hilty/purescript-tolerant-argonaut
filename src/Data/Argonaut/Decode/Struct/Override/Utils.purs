@@ -16,11 +16,13 @@ import Data.Operator.Top (class Top1_, top1_)
 import Foreign.Object (Object)
 import Record.Builder (Builder, build)
 import Type.RowList (class RowToList, RLProxy(RLProxy))
+import Control.Plus as Control.Plus
 
 decodeJsonPer
   :: forall f l0 l1 r0 r1 r2
    . Bind f
   => Bottom2 f String
+  => Control.Plus.Plus f
   => D.DecodeJsonPer Builder f Record l0 r0 l1 r1 r2
   => GDecodeJson r1 l1
   => RowToList r0 l0

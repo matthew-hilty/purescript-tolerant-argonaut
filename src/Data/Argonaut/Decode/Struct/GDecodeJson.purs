@@ -8,6 +8,7 @@ module Data.Argonaut.Decode.Struct.GDecodeJson
 import Prelude (class Category, class Semigroupoid, bind, identity, ($), (<<<))
 
 import Data.Argonaut.Core (Json)
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson) as D
 import Data.Argonaut.Decode.Struct.Utils
   ( getMissingFieldErrorMessage
@@ -56,13 +57,13 @@ instance gDecodeJson_NilNilNil
 instance gDecodeJson_ConsNilCons
   :: ( Cons s v r' r
      , D.DecodeJson v
-     , GDecodeJson p (Either String) g l' Nil () l' r'
+     , GDecodeJson p (Either JsonDecodeError) g l' Nil () l' r'
      , IsSymbol s
      , Lacks s r'
      , RInsert p g SProxy s l' r' l r
      , Semigroupoid p
      )
-  => GDecodeJson p (Either String) g (Cons s v l') Nil () (Cons s v l') r
+  => GDecodeJson p (Either JsonDecodeError) g (Cons s v l') Nil () (Cons s v l') r
   where
   gDecodeJson _ _ object = do
     case lookup fieldName object of
@@ -92,7 +93,7 @@ instance gDecodeJson_NilConsCons
 else instance gDecodeJson_ConsConsCons
   :: ( Cons s v r2' r2
      , D.DecodeJson v
-     , GDecodeJson p (Either String) g l0' (Cons s1 v1 l1') r1 l2' r2'
+     , GDecodeJson p (Either JsonDecodeError) g l0' (Cons s1 v1 l1') r1 l2' r2'
      , IsSymbol s
      , Lacks s r1
      , Lacks s r2'
@@ -101,7 +102,7 @@ else instance gDecodeJson_ConsConsCons
      )
   => GDecodeJson
         p
-        (Either String)
+        (Either JsonDecodeError)
         g
         (Cons s v l0')
         (Cons s1 v1 l1')

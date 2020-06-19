@@ -7,6 +7,7 @@ module Data.Argonaut.Decode.Struct.Tolerant.Combinators
 import Prelude
 
 import Data.Argonaut.Core (Json, isNull)
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode.Struct.Tolerant.DecodeJson
   ( class DecodeJson
   , decodeJson
@@ -20,7 +21,7 @@ import Foreign.Object (Object, lookup)
 -- |
 -- | Use this accessor if the key and value *must* be present in your object.
 -- | If the key and value are optional, use `getFieldOptional'` (`.::?`) instead.
-getField :: forall a. DecodeJson a => Object Json -> String -> Either String a
+getField :: forall a. DecodeJson a => Object Json -> String -> Either JsonDecodeError a
 getField o s =
   maybe
     (Left $ "Expected field " <> show s)
@@ -41,7 +42,7 @@ getFieldOptional'
    . DecodeJson a
   => Object Json
   -> String
-  -> Either String (Maybe a)
+  -> Either JsonDecodeError (Maybe a)
 getFieldOptional' o s =
   maybe
     (pure Nothing)
@@ -69,7 +70,7 @@ getFieldOptional
    . DecodeJson a
   => Object Json
   -> String
-  -> Either String (Maybe a)
+  -> Either JsonDecodeError (Maybe a)
 getFieldOptional o s =
   maybe
     (pure Nothing)

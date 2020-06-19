@@ -6,6 +6,7 @@ module Data.Argonaut.Decode.Struct.Tolerant.DecodeJson
 import Prelude (bind, ($))
 
 import Data.Argonaut.Core (Json, toObject)
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson) as D
 import Data.Argonaut.Decode.Struct.Tolerant.GDecodeJson
   ( class GDecodeJson
@@ -20,10 +21,10 @@ import Record.Builder (Builder, build)
 import Type.RowList (class RowToList, Nil, RLProxy(RLProxy), kind RowList)
 
 class DecodeJson a where
-  decodeJson :: Json -> Either String a
+  decodeJson :: Json -> Either JsonDecodeError a
 
 instance decodeJsonRecord
-  :: ( G.GDecodeJson Builder (Either String) Record Nil () l r
+  :: ( G.GDecodeJson Builder (Either JsonDecodeError) Record Nil () l r
      , RowToList r l
      )
   => DecodeJson (Record r)

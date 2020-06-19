@@ -17,6 +17,7 @@ import Data.Operator.Bottom (class Bottom2, bottom2)
 import Data.Operator.Top (class Top1_, top1_)
 import Foreign.Object (Object)
 import Type.RowList (class RowToList, RLProxy(RLProxy))
+import Control.Plus as Control.Plus
 
 elaborateFailure :: forall a. String -> Either String a -> Either String a
 elaborateFailure s e = lmap msg e
@@ -45,6 +46,7 @@ reportObject
   :: forall f l r
    . Bottom2 f String
   => GDecodeJson r l
+  => Control.Plus.Plus f
   => RowToList r l
   => Top1_ f
   => Object Json

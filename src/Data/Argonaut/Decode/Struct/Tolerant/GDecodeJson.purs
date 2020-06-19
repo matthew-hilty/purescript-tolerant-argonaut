@@ -7,6 +7,7 @@ import Prelude (class Category, class Semigroupoid, bind, identity, ($), (<<<))
 
 import Control.Plus (class Plus, empty)
 import Data.Argonaut.Core (Json)
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson) as D
 import Data.Argonaut.Decode.Struct.Utils (getMissingFieldErrorMessage)
 import Data.Either (Either)
@@ -48,14 +49,14 @@ instance gDecodeJson_NilNilNil
 instance gDecodeJson_ConsNilCons_Plus
   :: ( Cons s (f v) r' r
      , D.DecodeJson (f v)
-     , GDecodeJson p (Either String) g Nil () l' r'
+     , GDecodeJson p (Either JsonDecodeError) g Nil () l' r'
      , IsSymbol s
      , Lacks s r'
      , Plus f
      , RInsert p g SProxy s l' r' l r
      , Semigroupoid p
      )
-  => GDecodeJson p (Either String) g Nil () (Cons s (f v) l') r
+  => GDecodeJson p (Either JsonDecodeError) g Nil () (Cons s (f v) l') r
   where
   gDecodeJson _ _ object = do
     doRest <- gDecodeJson nil l' object
@@ -77,13 +78,13 @@ instance gDecodeJson_ConsNilCons_Plus
 else instance gDecodeJson_ConsNilCons_nonPlus
   :: ( Cons s v r' r
      , D.DecodeJson v
-     , GDecodeJson p (Either String) g Nil () l' r'
+     , GDecodeJson p (Either JsonDecodeError) g Nil () l' r'
      , IsSymbol s
      , Lacks s r'
      , RInsert p g SProxy s l' r' l r
      , Semigroupoid p
      )
-  => GDecodeJson p (Either String) g Nil () (Cons s v l') r
+  => GDecodeJson p (Either JsonDecodeError) g Nil () (Cons s v l') r
   where
   gDecodeJson _ _ object = do
     case lookup fieldName object of
@@ -113,7 +114,7 @@ instance gDecodeJson_NilConsCons
 else instance gDecodeJson_ConsConsCons_Plus
   :: ( Cons s (f v) r1' r1
      , D.DecodeJson (f v)
-     , GDecodeJson p (Either String) g (Cons s1 v1 l0') r0 l1' r1'
+     , GDecodeJson p (Either JsonDecodeError) g (Cons s1 v1 l0') r0 l1' r1'
      , IsSymbol s
      , Lacks s r0
      , Lacks s r1'
@@ -121,7 +122,7 @@ else instance gDecodeJson_ConsConsCons_Plus
      , RInsert p g SProxy s l1' r1' l1 r1
      , Semigroupoid p
      )
-  => GDecodeJson p (Either String) g (Cons s1 v1 l0') r0 (Cons s (f v) l1') r1
+  => GDecodeJson p (Either JsonDecodeError) g (Cons s1 v1 l0') r0 (Cons s (f v) l1') r1
   where
   gDecodeJson _ _ object = do
     doRest <- gDecodeJson l0 l1' object
@@ -143,14 +144,14 @@ else instance gDecodeJson_ConsConsCons_Plus
 else instance gDecodeJson_ConsConsCons_nonPlus
   :: ( Cons s v r1' r1
      , D.DecodeJson v
-     , GDecodeJson p (Either String) g (Cons s1 v1 l0') r0 l1' r1'
+     , GDecodeJson p (Either JsonDecodeError) g (Cons s1 v1 l0') r0 l1' r1'
      , IsSymbol s
      , Lacks s r0
      , Lacks s r1'
      , RInsert p g SProxy s l1' r1' l1 r1
      , Semigroupoid p
      )
-  => GDecodeJson p (Either String) g (Cons s1 v1 l0') r0 (Cons s v l1') r1
+  => GDecodeJson p (Either JsonDecodeError) g (Cons s1 v1 l0') r0 (Cons s v l1') r1
   where
   gDecodeJson _ _ object = do
     case lookup fieldName object of
