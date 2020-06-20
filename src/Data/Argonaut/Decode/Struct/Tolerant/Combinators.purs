@@ -7,11 +7,9 @@ module Data.Argonaut.Decode.Struct.Tolerant.Combinators
 import Prelude
 
 import Data.Argonaut.Core (Json, isNull)
-import Data.Argonaut.Decode.Struct.Tolerant.DecodeJson
-  ( class DecodeJson
-  , decodeJson
-  )
-import Data.Argonaut.Decode.Struct.Utils (elaborateFailure)
+import Data.Argonaut.Decode (JsonDecodeError(..))
+import Data.Argonaut.Decode.Struct.Tolerant.DecodeJson (class DecodeJson, decodeJson)
+import Data.Bifunctor (lmap)
 import Data.Either (Either(Left))
 import Data.Maybe (Maybe(Just, Nothing), maybe)
 import Foreign.Object (Object, lookup)
@@ -20,11 +18,11 @@ import Foreign.Object (Object, lookup)
 -- |
 -- | Use this accessor if the key and value *must* be present in your object.
 -- | If the key and value are optional, use `getFieldOptional'` (`.::?`) instead.
-getField :: forall a. DecodeJson a => Object Json -> String -> Either String a
+getField :: forall a. DecodeJson a => Object Json -> String -> Either JsonDecodeError a
 getField o s =
   maybe
-    (Left $ "Expected field " <> show s)
-    (elaborateFailure s <<< decodeJson)
+    (Left $ AtKey s MissingValue)
+    (lmap (AtKey s) <<< decodeJson)
     (lookup s o)
 
 infix 7 getField as .::
@@ -41,17 +39,15 @@ getFieldOptional'
    . DecodeJson a
   => Object Json
   -> String
-  -> Either String (Maybe a)
+  -> Either JsonDecodeError (Maybe a)
 getFieldOptional' o s =
-  maybe
-    (pure Nothing)
-    decode
-    (lookup s o)
+  maybe (pure Nothing) decode (lookup s o)
   where
-    decode json =
-      if isNull json
-        then pure Nothing
-        else Just <$> (elaborateFailure s <<< decodeJson) json
+  decode json = 
+    if isNull json then 
+      pure Nothing
+    else 
+      Just <$> (lmap (AtKey s) <<< decodeJson) json
 
 infix 7 getFieldOptional' as .::?
 
@@ -69,13 +65,10 @@ getFieldOptional
    . DecodeJson a
   => Object Json
   -> String
-  -> Either String (Maybe a)
+  -> Either JsonDecodeError (Maybe a)
 getFieldOptional o s =
-  maybe
-    (pure Nothing)
-    decode
-    (lookup s o)
+  maybe (pure Nothing) (map Just <<< decode) (lookup s o)
   where
-    decode json = Just <$> (elaborateFailure s <<< decodeJson) json
+  decode = lmap (AtKey s) <<< decodeJson
 
 infix 7 getFieldOptional as .::!

@@ -8,6 +8,7 @@ import Control.Alt (class Alt)
 import Control.MonadZero (empty)
 import Control.Plus (class Plus)
 import Data.Argonaut.Core (Json, isNull, jsonNull)
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode (class DecodeJson, decodeJson) as D
 import Data.Argonaut.Decode.Struct.Tolerant (decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
@@ -87,44 +88,44 @@ suites =
         let result = decodeJson $ encodeJson value
         assertEquivalence result value
     suite "Record -- with non-Plus fields -- Should Not Compile" $ pure unit
---       test "{ a0 :: Object Json }" do
---         let value = { a0: objectValue }
---         let result = decodeJson $ encodeJson value
---         assertEquivalence result value
---       test "{ a0 :: NonEmpty Array Int }" do
---         let value = { a0: NonEmpty 0 [] }
---         let result = decodeJson $ encodeJson value
---         assertEquivalence result value
---       test "{ a0 :: NonEmpty List Int }" do
---         let value = { a0: NonEmpty 0 Nil }
---         let result = decodeJson $ encodeJson value
---         assertEquivalence result value
+      -- test "{ a0 :: Object Json }" do
+      --   let value = { a0: objectValue }
+      --   let result = decodeJson $ encodeJson value
+      --   assertEquivalence result value
+      -- test "{ a0 :: NonEmpty Array Int }" do
+      --   let value = { a0: NonEmpty 0 [] }
+      --   let result = decodeJson $ encodeJson value
+      --   assertEquivalence result value
+      -- test "{ a0 :: NonEmpty List Int }" do
+      --   let value = { a0: NonEmpty 0 Nil }
+      --   let result = decodeJson $ encodeJson value
+      --   assertEquivalence result value
     suite "Record -- with absent fields" do
       test "#0" do
         let
-          result :: Either String { a0 :: Maybe Int }
+          result :: Either JsonDecodeError { a0 :: Maybe Int }
           result = decodeJson $ encodeJson {}
         assertEquivalence result { a0: empty }
       test "#1" do
         let
-          result :: Either String { a0 :: Array Int }
+          result :: Either JsonDecodeError { a0 :: Array Int }
           result = decodeJson $ encodeJson {}
         assertEquivalence result { a0: empty }
       test "#2" do
         let
-          result :: Either String { a0 :: List Int }
+          result :: Either JsonDecodeError { a0 :: List Int }
           result = decodeJson $ encodeJson {}
         assertEquivalence result { a0: empty }
       test "#3" do
         let
-          result :: Either String { a0 :: First' Int }
+          result :: Either JsonDecodeError { a0 :: First' Int }
           result = decodeJson $ encodeJson {}
         assertEquivalence result { a0: empty }
       test "#4" do
         let
           result
             :: Either
-                  String
+                  JsonDecodeError
                   { a0 :: Maybe Int
                   , a1 :: Array Int
                   , a2 :: List Int
@@ -142,7 +143,7 @@ suites =
         let
           result
             :: Either
-                  String
+                  JsonDecodeError
                   { a00 :: Maybe String
                   , a01 :: Maybe String
                   , a03 :: String

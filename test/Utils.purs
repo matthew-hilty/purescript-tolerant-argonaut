@@ -8,14 +8,13 @@ module Test.Utils
   , withErrorMsg
   ) where
 
-import Prelude (class Eq, class Show, show, (==), (<>), ($))
-
 import Data.Either (Either)
 import Data.Foldable (class Foldable, foldr)
 import Data.Maybe (Maybe(Just))
 import Data.Operator.Bottom (class Bottom2, bottom2)
 import Data.Operator.PartialOrd (class PartialOrd1, (.>=?))
 import Data.Tuple (Tuple(Tuple), uncurry)
+import Prelude (class Eq, class Show, show, (==), (<>), ($))
 import Test.Unit (Test)
 import Test.Unit.Assert as Assert
 

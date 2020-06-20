@@ -2,11 +2,12 @@ module Test.Suites.Builder
   ( suites
   ) where
 
-import Prelude (discard, pure, unit, (==), ($))
-
+import Data.Argonaut.Decode (printJsonDecodeError)
 import Data.Argonaut.Decode.Struct (decodeJson')
 import Data.Argonaut.Encode (encodeJson)
+import Data.Bifunctor (lmap)
 import Data.Maybe (Maybe(Just))
+import Prelude (discard, pure, unit, (==), ($))
 import Record.Builder (build)
 import Test.Unit (TestSuite, suite, test)
 import Test.Utils (assert, checkError, withErrorMsg)
@@ -25,7 +26,7 @@ suites =
                  }
         value1 = {}
         result = decodeJson' $ encodeJson value0
-      assert $ checkError result withErrorMsg (\f -> build f value1 == value0)
+      assert $ checkError (lmap printJsonDecodeError result) withErrorMsg (\f -> build f value1 == value0)
 
     test "#1" do
       let
@@ -39,7 +40,7 @@ suites =
         result = decodeJson' $ encodeJson value0
       assert
         $ checkError
-            result
+            (lmap printJsonDecodeError result)
             withErrorMsg
             (\f -> build f value1 == { a0: value0.a0
                                      , a1: value0.a1
@@ -61,7 +62,7 @@ suites =
         result = decodeJson' $ encodeJson value0
       assert
         $ checkError
-            result
+            (lmap printJsonDecodeError result)
             withErrorMsg
             (\f -> build f value1 == { a0: value0.a0
                                      , a1: value0.a1

@@ -4,8 +4,8 @@ Facilities for decoding JSON records with Argonaut
 
 ## Installation
 
-```shell
-bower install purescript-tolerant-argonaut
+```sh
+spago install purescript-tolerant-argonaut
 ```
 
 ## Documentation
@@ -93,4 +93,3 @@ iceCream =
 ```
 
 In the above example, all fields of a JSON object are decoded in standard fashion, except the 'scoops' field, since its decoding depends on another field of the JSON object, the 'promotion' field. As decoding for the 'promotion' field is not overridden, [decodeJsonWith](https://pursuit.purescript.org/packages/purescript-tolerant-argonaut/docs/Data.Argonaut.Decode.Struct#v:decodeJsonWith) can make the derivation of promotion data available to the customized decoder for 'scoops'.
-
