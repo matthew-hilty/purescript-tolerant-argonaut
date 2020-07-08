@@ -3,24 +3,15 @@ module Data.Argonaut.Decode.Struct.Cross.DecodeJsonWith
   , decodeJsonWith
   ) where
 
-import Prelude
-  ( class Bind
-  , class Category
-  , class Semigroupoid
-  , bind
-  , identity
-  , ($)
-  , (<<<)
-  )
-
 import Data.Argonaut.Core (Json)
-import Data.Argonaut.Decode.Struct.Utils (getMissingFieldErrorMessage)
+import Data.Argonaut.Decode (JsonDecodeError(..))
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.Operator.Bottom (class Bottom2, bottom2)
 import Data.Operator.Top (class Top1_, top1_)
 import Data.Struct (class RGet, class RInsert, rget, rinsert)
 import Data.Symbol (class IsSymbol, SProxy(SProxy), reflectSymbol)
 import Foreign.Object (Object, lookup)
+import Prelude (class Bind, class Category, class Semigroupoid, bind, identity, ($), (<<<))
 import Type.Equality (class TypeEquals, to)
 import Type.Row (class Cons, class Lacks)
 import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
@@ -59,7 +50,7 @@ instance decodeJsonWithNil
 
 instance decodeJsonWithCons
   :: ( Bind f
-     , Bottom2 f String
+     , Bottom2 f JsonDecodeError
      , Cons s fn r0' r0
      , Cons s v r3' r3
      , DecodeJsonWith p f g l0' r0' l2 r2 r3' a
@@ -80,7 +71,7 @@ instance decodeJsonWithCons
         doRest <- decodeJsonWith l0' l2 decoderStruct' object x
         top1_ $ rinsert l3' l3 s val <<< doRest
       Nothing ->
-        bottom2 $ getMissingFieldErrorMessage fieldName
+        bottom2 $ AtKey fieldName MissingValue
     where
     decoder :: Json -> a -> f v
     decoder = to $ rget l0 s decoderStruct

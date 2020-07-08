@@ -4,8 +4,10 @@ module Test.Suites.Override
 
 import Prelude
 
+import Data.Argonaut.Decode (JsonDecodeError(..), printJsonDecodeError)
 import Data.Argonaut.Decode.Struct.Override (decodeJsonPer)
 import Data.Argonaut.Encode (encodeJson)
+import Data.Bifunctor (lmap)
 import Data.Either (Either(Left, Right))
 import Data.Maybe (Maybe(Just))
 import Test.Unit (TestSuite, suite, test)
@@ -20,7 +22,7 @@ suites =
           suite "{ a0: 0, a1: 1, a2: Just 2 }" do
             test "Override with Just" do
               let
-                result :: Either String { a0 :: Int, a1 :: Int, a2 :: Maybe Int }
+                result :: Either JsonDecodeError { a0 :: Int, a1 :: Int, a2 :: Maybe Int }
                 result =
                   decodeJsonPer
                     { a2: \json -> Right $ Just 1002 }
@@ -33,7 +35,7 @@ suites =
             let
               result
                 :: Either
-                    String
+                    JsonDecodeError
                     { a0 :: Int
                     , a1 :: Int
                     , a2 :: Maybe Int
@@ -47,12 +49,12 @@ suites =
                   , a4: \json -> Right $ Just false
                   }
                   (encodeJson { a0: 0, a1: 1, a2: Just 2 })
-            assert $ fails result
+            assert $ fails (lmap printJsonDecodeError result)
           test "{ a0: 0, a1: 1, a2: Just 2, a3: Just \"hello\", a4: Just true }" do
             let
               result
                 :: Either
-                    String
+                    JsonDecodeError
                     { a0 :: Int
                     , a1 :: Int
                     , a2 :: Maybe Int
@@ -79,7 +81,7 @@ suites =
               let
                 result
                   :: Either
-                      String
+                      JsonDecodeError
                       { a0 :: Int
                       , a1 :: Int
                       , a2 :: Maybe Int
@@ -108,7 +110,7 @@ suites =
               let
                 result
                   :: Either
-                      String
+                      JsonDecodeError
                       { a0 :: Int
                       , a1 :: Int
                       , a2 :: Maybe Int
@@ -118,7 +120,7 @@ suites =
                 result =
                   decodeJsonPer
                     { a1: \json -> Right $ 1002
-                    , a3: \json -> Left "Capricious failure"
+                    , a3: \json -> Left MissingValue
                     }
                   (encodeJson { a0: 0
                               , a1: 1
@@ -126,14 +128,14 @@ suites =
                               , a3: Just "hello"
                               , a4: Just true
                               })
-              assert $ fails result
+              assert $ fails (lmap printJsonDecodeError result)
         suite ("Override " <> "a1, a4") do
           suite "{ a0: 0, a1: 1, a2: Just 2, a3: Just \"hello\", a4: Just true }" do
             test "#0" do
               let
                 result
                   :: Either
-                      String
+                      JsonDecodeError
                       { a0 :: Int
                       , a1 :: Int
                       , a2 :: Maybe Int
@@ -164,7 +166,7 @@ suites =
               let
                 result
                   :: Either
-                      String
+                      JsonDecodeError
                       { a0 :: Int
                       , a1 :: Int
                       , a2 :: Maybe Int

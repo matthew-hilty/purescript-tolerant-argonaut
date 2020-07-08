@@ -4,6 +4,7 @@ module Test.Suites.Cross
 
 import Prelude
 
+import Data.Argonaut.Decode (JsonDecodeError)
 import Data.Argonaut.Decode.Struct.Cross (decodeJsonWith)
 import Data.Argonaut.Encode (encodeJson)
 import Data.Either (Either(Right))
@@ -18,7 +19,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -45,7 +46,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -76,7 +77,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -109,7 +110,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -142,7 +143,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -172,7 +173,7 @@ suites =
       let
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int
@@ -204,7 +205,7 @@ suites =
         isEven i = (i `mod` 2) == 0
         result
           :: Either
-              String
+              JsonDecodeError
               { a0 :: Int
               , a1 :: Int
               , a2 :: Maybe Int

@@ -4,8 +4,8 @@ Facilities for decoding JSON records with Argonaut
 
 ## Installation
 
-```shell
-bower install purescript-tolerant-argonaut
+```sh
+spago install tolerant-argonaut
 ```
 
 ## Documentation
@@ -24,14 +24,14 @@ function with behavior modeled after the standard Argonaut `decodeJson`, the sal
 Whereas `decodeJson` from [Data.Argonaut.Decode](https://pursuit.purescript.org/packages/purescript-argonaut-codecs/docs/Data.Argonaut.Decode) fails to decode a JSON object by design if the object lacks a field, `decodeJson` from [Data.Argonaut.Decode.Struct.Tolerant](https://pursuit.purescript.org/packages/purescript-tolerant-argonaut/docs/Data.Argonaut.Decode.Struct.Tolerant) interprets a field's absence, should the field have a value of a [Plus](https://pursuit.purescript.org/packages/purescript-control/docs/Control.Plus#t:Plus)-instance type, as the instance's [empty](https://pursuit.purescript.org/packages/purescript-control/docs/Control.Plus#v:empty) value.
 
 ```purescript
-import Data.Argonaut.Decode (decodeJson) as D
+import Data.Argonaut.Decode (decodeJson, JsonDecodeError) as D
 import Data.Argonaut.Decode.Struct.Tolerant (decodeJson) as T
 import Data.Argonaut.Encode (encodeJson)
 
 emptyJson = encodeJson {}
-value1 = D.decodeJson emptyJson :: Either String { a :: Maybe Int }
--- value1 == Left "JSON was missing expected field: a"
-value2 = T.decodeJson emptyJson :: Either String { a :: Maybe Int }
+value1 = D.decodeJson emptyJson :: Either D.JsonDecodeError { a :: Maybe Int }
+-- value1 == Left (AtKey "a" MissingValue)
+value2 = T.decodeJson emptyJson :: Either D.JsonDecodeError { a :: Maybe Int }
 -- value2 == Right { a: Nothing }
 ```
 
@@ -40,7 +40,7 @@ value2 = T.decodeJson emptyJson :: Either String { a :: Maybe Int }
 JSON representations of data do not always match data structures in code. [decodeJsonPer](https://pursuit.purescript.org/packages/purescript-tolerant-argonaut/docs/Data.Argonaut.Decode.Struct#v:decodeJsonPer), by default, delegates to standard [purescript-argonaut-codecs](https://pursuit.purescript.org/packages/purescript-argonaut-codecs/docs/Data.Argonaut.Decode.Class#v:decodeJson) JSON decoding. However, it also permits customized decoding of specific fields when their representation in JSON does not accord with their target representation.
 
 ```purescript
-import Data.Argonaut.Decode (decodeJson) as D
+import Data.Argonaut.Decode (decodeJson, JsonDecodeError) as D
 import Data.Argonaut.Decode.Struct (decodeJsonPer) as T
 import Data.Argonaut.Encode (encodeJson)
 
@@ -50,7 +50,7 @@ type IceCream = { flavor :: Flavor, scoops :: Scoops }
 
 jsonIceCream = encodeJson { flavor: "vanilla", scoops: 2 }
 
-iceCream :: Either String IceCream
+iceCream :: Either D.JsonDecodeError IceCream
 iceCream =
     T.decodeJsonPer
       { scoops: \scoopsJson -> convert <$> D.decodeJson scoopsJson }
@@ -68,7 +68,7 @@ iceCream =
 An example should make this clearer:
 
 ```purescript
-import Data.Argonaut.Decode (decodeJson) as D
+import Data.Argonaut.Decode (decodeJson, JsonDecodeError) as D
 import Data.Argonaut.Decode.Struct (decodeJsonWith) as T
 import Data.Argonaut.Encode (encodeJson)
 
@@ -79,7 +79,7 @@ type IceCream = { flavor :: Flavor, promotion :: Promotion, scoops :: Scoops }
 
 jsonIceCream = encodeJson { flavor: "vanilla", promotion: true, scoops: 2 }
 
-iceCream :: Either String IceCream
+iceCream :: Either D.JsonDecodeError IceCream
 iceCream =
     T.decodeJsonWith
       { scoops: \scoopsJson { promotion } ->
@@ -93,4 +93,3 @@ iceCream =
 ```
 
 In the above example, all fields of a JSON object are decoded in standard fashion, except the 'scoops' field, since its decoding depends on another field of the JSON object, the 'promotion' field. As decoding for the 'promotion' field is not overridden, [decodeJsonWith](https://pursuit.purescript.org/packages/purescript-tolerant-argonaut/docs/Data.Argonaut.Decode.Struct#v:decodeJsonWith) can make the derivation of promotion data available to the customized decoder for 'scoops'.
-
