@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - 12
+
+install:
+  - npm i -g purescript spago
+  - npm i
+
+script:
+  - spago build
+  - spago test

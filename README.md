@@ -1,5 +1,7 @@
 # purescript-tolerant-argonaut
 
+[![Build Status](https://travis-ci.com/matthew-hilty/purescript-tolerant-argonaut.svg?branch=master)](https://travis-ci.com/matthew-hilty/purescript-tolerant-argonaut)
+
 Facilities for decoding JSON records with Argonaut
 
 ## Installation
