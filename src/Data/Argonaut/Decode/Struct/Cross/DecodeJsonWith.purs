@@ -14,25 +14,25 @@ import Foreign.Object (Object, lookup)
 import Prelude (class Bind, class Category, class Semigroupoid, bind, identity, ($), (<<<))
 import Type.Equality (class TypeEquals, to)
 import Type.Row (class Cons, class Lacks)
-import Type.RowList (Cons, Nil, RLProxy(RLProxy), kind RowList)
+import Type.RowList (Cons, Nil, RLProxy(RLProxy), RowList)
 import Unsafe.Coerce (unsafeCoerce)
 
 class DecodeJsonWith
   (p  :: Type -> Type -> Type)
   (f  :: Type -> Type)
-  (g  :: # Type -> Type)
-  (l0 :: RowList)
-  (r0 :: # Type)
-  (l2 :: RowList)
-  (r2 :: # Type)
-  (r3 :: # Type)
+  (g  :: Row Type -> Type)
+  (l0 :: RowList Type)
+  (r0 :: Row Type)
+  (l2 :: RowList Type)
+  (r2 :: Row Type)
+  (r3 :: Row Type)
   a
   | l0 -> r0 a
   , l2 -> r2
   , l0 l2 -> r3
   where
   decodeJsonWith
-    :: forall (h :: RowList -> Type)
+    :: forall (h :: RowList Type -> Type)
      . h l0
     -> h l2
     -> g r0
